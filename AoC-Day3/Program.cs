@@ -11,6 +11,11 @@ namespace AoC_Day3
     {
         static void Main(string[] args)
         {
+            //streamwriter write to file [1,2,3,4,5]
+            StreamWriter sw = new StreamWriter("TextFile2.txt");
+            sw.Write("[");
+            sw.Close();
+
             StreamReader sr = new StreamReader("C:\\Users\\prive\\source\\repos\\niet belangrijk\\aoc1\\AoC-Day3\\TextFile1.txt");
             string line;
             List<char> commonCharList = new List<char>();
