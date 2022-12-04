@@ -12,9 +12,14 @@ namespace AoC_DAy4
         static void Main(string[] args)
         {
             StreamReader sr = new StreamReader("C:\\Users\\prive\\source\\repos\\niet belangrijk\\aoc1\\AoC-Day4\\TextFile1.txt");
+            Console.WriteLine("part 1: " + part1(sr));
+            Console.ReadLine();
+        }
+        public static int part1(StreamReader s)
+        {
             string line;
             int count = 0;
-            while ((line = sr.ReadLine()) != null)
+            while ((line = s.ReadLine()) != null)
             {
                 string[] ranges = line.Split(',');
                 int range1Low = int.Parse(ranges[0].Split('-')[0]);
@@ -25,10 +30,9 @@ namespace AoC_DAy4
                 {
                     count++;
                 }
-                
+
             }
-            Console.WriteLine(count);
-            Console.ReadLine();
+            return count;
         }
     }
 }
