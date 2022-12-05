@@ -33,6 +33,10 @@ namespace AoC_DAy4
                 {
                     count++;
                 }
+                if(null == null)
+                {
+                    Console.WriteLine("ja");
+                }
             }
             return count;
         }
