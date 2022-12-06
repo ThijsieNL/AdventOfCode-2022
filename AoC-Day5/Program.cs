@@ -15,76 +15,85 @@ namespace AoC_Day5
             List<Stack<char>> stackList = new List<Stack<char>>();
             List<Stack<char>> reversedStackList = new List<Stack<char>>();
             int partOfStream = 1;
-            for(int i = 0; i<9; i++)
+            //maak de stacks
+            for(int i = 0; i < 9; i++)
             {
                 //initialise the stacks in the list
                 stackList.Add(new Stack<char>());
+                reversedStackList.Add(new Stack<char>());
             }
-            //read file
+
             string line;
-            //!sr.endofline
             while ((line = sr.ReadLine()) != null)
             {
-                if(line == " ")
+                //Console.WriteLine(partOfStream);
+                if (line == " ")
                 {
                     partOfStream++;
                     continue;
                 }
+                //read the stacks
                 if (partOfStream == 1)
                 {
                     int index = 1;
-                    //stackindex makes it clear to which stack to push the letter
                     int stackindex = 0;
+
                     //deze loop zorgt ervoor dat je dezelfde line blijft lezen, dit leest de characters
                     while (index < line.Length)
                     {
-                        if (line[index] >= 65 || line[index] <= 90)
+                        if (line[index] >= 65 && line[index] <= 90)
                         {
-                            //Console.WriteLine(line[index]);
-                            //push character to the list of chars
-                            //NOTE: THIS GIVES A REVERSE STACK, WE NEED TO REVERSE EACH STACK IN THE ARRAY
                             stackList[stackindex].Push(line[index]);
                         }
                         stackindex += 1;
                         index += 4;
                     }
+                    Console.WriteLine("stacklist 1: " + stackList[0].Count);
                 }
+                //this happens when the string is only a space == " "
                 if(partOfStream == 2)
                 {
-                    Console.WriteLine("reversed");
-                    //reversedStackList = reverseStacks(stackList);
+                    reversedStackList = reverseStacks(stackList);
+
                     partOfStream++;
                 }
+                
+                //do the moves
                 if (partOfStream == 3)
                 {
                     //read the moves
                     string[] moves = line.Split(' ');
-                    for(int i = 0;  i<moves.Length; i++)
-                    {
-                        Console.WriteLine(moves[i]);
-                    }
                     int amount = int.Parse(moves[1]);
-                    //TODO: don't use - 1 for the index? make sure that the process goes correctly, step by step
-                    int startindex = int.Parse(moves[3]) - 1;
+                    int startindex = int.Parse(moves[3]) - 1; //need the - 1 for indexing...
                     int endindex = int.Parse(moves[5]) - 1;
-                    makeMove(stackList, amount, startindex, endindex);
-                    //makeMove(reversedStackList, amount, startindex, endindex);
+
+                    //this actually moves around the elements of the stack.
+                    for (int i = 0; i < amount; i++)
+                    {
+                        char popped = reversedStackList[startindex].Pop();
+                        reversedStackList[endindex].Push(popped);
+                    }
                 }
                 
             }
-            Console.WriteLine("done");
+            Console.WriteLine("testing the answer: ");
             List<char> charResultList = new List<char>();
-            foreach (Stack<char> stack in stackList)
+            foreach (Stack<char> stack in reversedStackList)
             {
-                //Console.Write(stack.Pop());
-                //charResultList.Add(stack.Peek());
+                Console.WriteLine("popped:" + stack.Peek());
                 foreach (char c in stack)
                 {
-                    Console.WriteLine(c);
+                    Console.WriteLine("char = " + c);
                 }
-                Console.WriteLine("");
-                
+                charResultList.Add(stack.Peek());
             }
+            Console.WriteLine("result: ");
+            foreach (char c in charResultList)
+            {
+                Console.Write(c);
+            }
+            Console.WriteLine("\ndone");
+            
             //Console.WriteLine(reversedStackList[0].Pop());
             Console.ReadLine();
         }
@@ -111,6 +120,14 @@ namespace AoC_Day5
                     reversedStack.Push(stack.Pop());
                 }
                 reversedList.Add(reversedStack);
+            }
+            //remove white space in the stack
+            foreach (Stack<char> stack in reversedList)
+            {
+                while (stack.Peek() == ' ')
+                {
+                    stack.Pop();
+                }
             }
             return reversedList;
         }
