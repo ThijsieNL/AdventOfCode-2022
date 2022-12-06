@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,8 +16,9 @@ namespace AoC_Day5
             List<Stack<char>> stackList = new List<Stack<char>>();
             List<Stack<char>> reversedStackList = new List<Stack<char>>();
             int partOfStream = 1;
+            bool part2 = true;
             //maak de stacks
-            for(int i = 0; i < 9; i++)
+            for (int i = 0; i < 9; i++)
             {
                 //initialise the stacks in the list
                 stackList.Add(new Stack<char>());
@@ -66,11 +68,21 @@ namespace AoC_Day5
                     int amount = int.Parse(moves[1]);
                     int startindex = int.Parse(moves[3]) - 1; //need the - 1 for indexing...
                     int endindex = int.Parse(moves[5]) - 1;
+                    Stack<char> tempstack = new Stack<char>();
+                    
+                    //for part 2: put the elements to be popped in a separate stack first, and then pop that stack and push it to the other stack
 
                     //this actually moves around the elements of the stack.
                     for (int i = 0; i < amount; i++)
                     {
+                        //first put the popped elements to a temporary stack
                         char popped = reversedStackList[startindex].Pop();
+                        tempstack.Push(popped);
+                    }
+                    for (int i = 0; i < amount; i++)
+                    {
+                        //then push tempstack one by one to the main stack
+                        char popped = tempstack.Pop();
                         reversedStackList[endindex].Push(popped);
                     }
                 }
